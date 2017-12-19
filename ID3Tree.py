@@ -30,7 +30,6 @@ class ID3Tree:
         self.target_set = target_set
         self.feature_names = feature_names
         self.target_names = target_names
-        print('target_names：', target_names)
 
         self.tree_root = TreeNode(data_set, target_set, -1, -1, [],
                                   list(i for i in range(len(self.data_set))))
@@ -45,7 +44,7 @@ class ID3Tree:
             return node
         max_info_gain_feature_index, split_value = self.get_max_info_gain_feature(node)
         print('最大增益属性的索引：', max_info_gain_feature_index)
-        node.classification = None  # 保存的是针对当前分支的结果，有值则表示该点是叶子节点
+        node.classification = None
         node.selected_feature_index = max_info_gain_feature_index
         node.threshold = split_value
         ID3Tree.generate_child_node(node)
@@ -84,10 +83,7 @@ class ID3Tree:
         max_gain = -1000000
         max_gain_split_value = None
         for i in range(len(node.remain_feature_indexes)):
-            print('node.remain_feature_indexes[i]', node.remain_feature_indexes[i])
-            print('node.data_set[node.remain_feature_indexes[i]][0]', node.data_set[node.remain_feature_indexes[i]][0])
             if ID3Tree.is_continuous(node.data_set[node.remain_feature_indexes[i]][0]):
-                print('remain_feature_indexes', node.remain_feature_indexes)
                 feature_values = node.data_set[node.remain_feature_indexes[i]]
                 split_values = sorted(set(list(float(value) for value in feature_values)))
                 for j in range(len(split_values) - 1):
