@@ -6,8 +6,8 @@ target_set = []
 feature_names = []
 target_names = []
 
-filename = "C:\\Users\姜岳林\Desktop\西瓜数据集3.0.txt"
-file = open(filename, 'r')
+filename = "D:\\yuklyn\python\PycharmProjects\watermelon\西瓜数据集3.0.txt"
+file = open(filename, 'r', encoding='UTF-8')
 has_order = True
 line_count = 0
 while 1:
@@ -30,10 +30,21 @@ while 1:
     line_count = line_count + 1
 
 target_names = list(set(target_set))
+print('feature_names：', feature_names)
 print('data_set:', data_set)
 print('target_set:', target_set)
-print('feature_names：', feature_names)
 
 tree = ID3Tree.ID3Tree()
 tree.create_tree(data_set, target_set, feature_names, target_names)
+
+classifications = []
+test_set = [[] for row in range(len(data_set[0]))]
+for col in range(len(data_set)):
+    col_data = data_set[col]
+    for row in range(len(test_set)):
+        test_set[row].append(col_data[row])
+for test_data in test_set:
+    classification = tree.predict(test_data)
+    classifications.append(classification)
+print('classifications:', classifications)
 

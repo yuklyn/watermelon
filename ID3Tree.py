@@ -35,6 +35,23 @@ class ID3Tree:
                                   list(i for i in range(len(self.data_set))))
         self.tree_generate(self.tree_root)
 
+    def predict(self, data_in: list, node: TreeNode=None):
+        if not node:
+            node = self.tree_root
+        if node.classification:
+            return node.classification
+        selected_feature = node.selected_feature_index
+        feature_value = data_in[selected_feature]
+        if node.threshold:
+            if float(feature_value) <= node.threshold:
+                return self.predict(data_in, node.children[0])
+            else:
+                return self.predict(data_in, node.children[1])
+        else:
+            for child in node.children:
+                if feature_value == child.feature_value:
+                    return self.predict(data_in, child)
+
     def tree_generate(self, node: TreeNode):
         if ID3Tree.is_same_classification(node.target_set):
             ID3Tree.label_as_leaf(node)
